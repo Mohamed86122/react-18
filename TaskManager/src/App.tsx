@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import { PlusCircle, Layout, CheckCircle } from 'lucide-react';
+import { PlusCircle, CheckCircle } from 'lucide-react';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import TaskForm from './components/TaskForm';
 import TaskCard from './components/TaskCard';
 import type { Task, TaskCategory } from './types/task';
 
 const defaultCategories: TaskCategory[] = [
-  { id: '1', name: 'Personal', color: '#3B82F6' },
-  { id: '2', name: 'Work', color: '#EF4444' },
-  { id: '3', name: 'Shopping', color: '#10B981' },
-  { id: '4', name: 'Health', color: '#8B5CF6' },
+  { id: '1', name: 'Personnel', color: '#3B82F6' },
+  { id: '2', name: 'Travail', color: '#EF4444' },
+  { id: '4', name: 'Sport', color: '#8B5CF6' },
 ];
 
 function App() {
@@ -18,6 +17,12 @@ function App() {
   const [showForm, setShowForm] = useState(false);
   const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  
+  useEffect(() => {
+    document.body.className = isDarkMode ? 'dark' : '';
+  }, [isDarkMode]);
+  
 
   const handleAddTask = (newTask: Omit<Task, 'id' | 'createdAt'>) => {
     const task: Task = {
@@ -56,9 +61,17 @@ function App() {
         <header className="mb-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Layout className="w-8 h-8 text-blue-500" />
+              {/* <Layout className="w-8 h-8 text-blue-500" /> */}
+              <img src="./public/assets/images/logo.png" id="image" alt="Task Manager"  />
               <h1 className="text-2xl font-bold text-gray-900">Task Manager</h1>
             </div>
+            <button
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              className="px-4 py-2 rounded-lg bg-gray-800 text-white"
+            >
+              {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+            </button>
+
             <button
               onClick={() => setShowForm(true)}
               className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 flex items-center gap-2"
@@ -160,3 +173,4 @@ function App() {
 }
 
 export default App;
+import { useEffect } from 'react';
